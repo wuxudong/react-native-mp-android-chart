@@ -33,8 +33,8 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
     }
 
     @Override
-    ChartData createData(String[] xValues) {
-        return new BarData(xValues);
+    ChartData createData() {
+        return new BarData();
     }
 
     @Override
@@ -43,17 +43,22 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
     }
 
     @Override
-    BarEntry createEntry(ReadableArray yValues, int index) {
+    BarEntry createEntry(ReadableArray values, int index) {
         BarEntry entry;
 
-        if (ReadableType.Array.equals(yValues.getType(index))) {
-            entry = new BarEntry(BridgeUtils.convertToFloatArray(yValues.getArray(index)), index);
-        } else if (ReadableType.Number.equals(yValues.getType(index))) {
-            entry = new BarEntry((float) yValues.getDouble(index), index);
+        ReadableMap map = values.getMap(index);
+
+        if (ReadableType.Array.equals(map.getType("y"))) {
+            entry = new BarEntry((float) map.getDouble("x"), BridgeUtils.convertToFloatArray(map.getArray("y")));
+        } else if (ReadableType.Number.equals(map.getType("y"))) {
+            entry = new BarEntry((float) map.getDouble("x"), (float) map.getDouble("y"));
         } else {
-            throw new IllegalArgumentException("Unexpected entry type: " + yValues.getType(index));
+            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
         }
 
+        if (map.hasKey("payload")) {
+            entry.setData(map.getMap("payload"));
+        }
         return entry;
     }
 
@@ -64,9 +69,6 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
         ChartDataSetConfigUtils.commonConfig(barDataSet, config);
         ChartDataSetConfigUtils.commonBarLineScatterCandleBubbleConfig(barDataSet, config);
 
-        if (BridgeUtils.validate(config, ReadableType.Number, "barSpacePercent")) {
-            barDataSet.setBarSpacePercent((float) config.getDouble("barSpacePercent"));
-        }
         if (BridgeUtils.validate(config, ReadableType.String, "barShadowColor")) {
             barDataSet.setBarShadowColor(Color.parseColor(config.getString("barShadowColor")));
         }
@@ -88,8 +90,4 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
         chart.setDrawBarShadow(enabled);
     }
 
-    @ReactProp(name = "drawHighlightArrow")
-    public void setDrawHighlightArrow(BarChart chart, boolean enabled) {
-        chart.setDrawHighlightArrow(enabled);
-    }
 }

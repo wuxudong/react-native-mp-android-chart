@@ -10,6 +10,7 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
@@ -29,9 +30,10 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
     }
 
     @Override
-    ChartData createData(String[] xValues) {
-        return new BubbleData(xValues);
+    ChartData createData() {
+        return new BubbleData();
     }
+
 
     @Override
     IDataSet createDataSet(ArrayList<BubbleEntry> entries, String label) {
@@ -52,20 +54,23 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
     }
 
     @Override
-    BubbleEntry createEntry(ReadableArray yValues, int index) {
-        if (!ReadableType.Map.equals(yValues.getType(index))) {
+    BubbleEntry createEntry(ReadableArray values, int index) {
+        if (!ReadableType.Map.equals(values.getType(index))) {
             throw new IllegalArgumentException("Invalid BubbleEntry data");
         }
 
-        ReadableMap entry = yValues.getMap(index);
-        if(!BridgeUtils.validate(entry, ReadableType.Number, "value") ||
+        ReadableMap entry = values.getMap(index);
+        if(BridgeUtils.validate(entry, ReadableType.Number, "x") ||
+                !BridgeUtils.validate(entry, ReadableType.Number, "y") ||
                 !BridgeUtils.validate(entry, ReadableType.Number, "size")) {
             throw new IllegalArgumentException("Invalid BubbleEntry data");
         }
 
-        float value = (float) entry.getDouble("value");
+
+        float x = (float) entry.getDouble("x");
+        float y = (float) entry.getDouble("y");
         float size = (float) entry.getDouble("size");
 
-        return new BubbleEntry(index, value, size);
+        return new BubbleEntry(x, y, size);
     }
 }

@@ -21,10 +21,10 @@ public abstract class YAxisChartBase<T extends Chart, U extends Entry> extends C
 
     protected void setYAxisConfig(YAxis axis, ReadableMap propMap) {
         if (BridgeUtils.validate(propMap, ReadableType.Number, "axisMaxValue")) {
-            axis.setAxisMaxValue((float) propMap.getDouble("axisMaxValue"));
+            axis.setAxisMaximum((float) propMap.getDouble("axisMaxValue"));
         }
         if (BridgeUtils.validate(propMap, ReadableType.Number, "axisMinValue")) {
-            axis.setAxisMinValue((float) propMap.getDouble("axisMinValue"));
+            axis.setAxisMinimum((float) propMap.getDouble("axisMinValue"));
         }
         if (BridgeUtils.validate(propMap, ReadableType.Boolean, "inverted")) {
             axis.setInverted(propMap.getBoolean("inverted"));
@@ -34,9 +34,6 @@ public abstract class YAxisChartBase<T extends Chart, U extends Entry> extends C
         }
         if (BridgeUtils.validate(propMap, ReadableType.Number, "spaceBottom")) {
             axis.setSpaceBottom((float) propMap.getDouble("spaceBottom"));
-        }
-        if (BridgeUtils.validate(propMap, ReadableType.Boolean, "showOnlyMinMax")) {
-            axis.setShowOnlyMinMax(propMap.getBoolean("showOnlyMinMax"));
         }
         if (BridgeUtils.validate(propMap, ReadableType.Number, "labelCount")) {
             boolean labelCountForce = false;

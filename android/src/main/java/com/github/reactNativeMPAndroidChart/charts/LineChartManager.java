@@ -2,6 +2,8 @@ package com.github.reactNativeMPAndroidChart.charts;
 
 
 import android.graphics.Color;
+
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 
@@ -30,9 +32,10 @@ public class LineChartManager extends BarLineChartBaseManager<LineChart, Entry> 
     }
 
     @Override
-    ChartData createData(String[] xValues) {
-        return new LineData(xValues);
+    ChartData createData() {
+        return new LineData();
     }
+
 
     @Override
     IDataSet createDataSet(ArrayList<Entry> entries, String label) {
@@ -55,8 +58,8 @@ public class LineChartManager extends BarLineChartBaseManager<LineChart, Entry> 
         if (BridgeUtils.validate(config, ReadableType.Boolean, "drawCircles")) {
             lineDataSet.setDrawCircles(config.getBoolean("drawCircles"));
         }
-        if (BridgeUtils.validate(config, ReadableType.Boolean, "drawCubic")) {
-            lineDataSet.setDrawCubic(config.getBoolean("drawCubic"));
+        if (BridgeUtils.validate(config, ReadableType.String, "mode")) {
+            lineDataSet.setMode(LineDataSet.Mode.valueOf(config.getString("mode")));
         }
         if (BridgeUtils.validate(config, ReadableType.Number, "drawCubicIntensity")) {
             lineDataSet.setCubicIntensity((float) config.getDouble("drawCubicIntensity"));
@@ -92,4 +95,17 @@ public class LineChartManager extends BarLineChartBaseManager<LineChart, Entry> 
             lineDataSet.enableDashedLine(lineLength, spaceLength, phase);
         }
     }
+
+    @Override
+    Entry createEntry(ReadableArray values, int index) {
+        ReadableMap map = values.getMap(index);
+
+        Entry entry = new Entry((float) map.getDouble("x"), (float) map.getDouble("y"));
+        if (map.hasKey("payload")) {
+            entry.setData(map.getMap("payload"));
+        }
+        return entry;
+    }
+
+
 }

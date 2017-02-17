@@ -27,20 +27,8 @@ public abstract class RNMarkerView extends MarkerView {
             CandleEntry ce = (CandleEntry) e;
             tvContent.setText(Utils.formatNumber(ce.getClose(), 2, true));
         } else {
-            tvContent.setText(Utils.formatNumber(e.getVal(), 0, true));
+            tvContent.setText(Utils.formatNumber(e.getY(), 0, true));
         }
-    }
-
-    @Override
-    public int getXOffset(float xpos) {
-        // this will center the marker-view horizontally
-        return -(getWidth() / 2);
-    }
-
-    @Override
-    public int getYOffset(float ypos) {
-        // this will cause the marker-view to be above the selected value
-        return -getHeight();
     }
 
     public TextView getTvContent() {

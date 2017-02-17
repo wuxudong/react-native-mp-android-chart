@@ -2,22 +2,26 @@ package com.github.reactNativeMPAndroidChart.charts;
 
 
 import android.graphics.Color;
+import android.view.View;
+
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.annotations.ReactProp;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
 
 import java.util.ArrayList;
 
-public class PieChartManager extends ChartBaseManager<PieChart, Entry> {
+public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
 
     @Override
     public String getName() {
@@ -25,22 +29,22 @@ public class PieChartManager extends ChartBaseManager<PieChart, Entry> {
     }
 
     @Override
-    protected PieChart createViewInstance(ThemedReactContext reactContext) {
+    protected View createViewInstance(ThemedReactContext reactContext) {
         return new PieChart(reactContext);
     }
 
     @Override
-    ChartData createData(String[] xValues) {
-        return new PieData(xValues);
+    ChartData createData() {
+        return new PieData();
     }
 
     @Override
-    IDataSet createDataSet(ArrayList<Entry> entries, String label) {
+    IDataSet<PieEntry> createDataSet(ArrayList<PieEntry> entries, String label) {
         return new PieDataSet(entries, label);
     }
 
     @Override
-    void dataSetConfig(IDataSet<Entry> dataSet, ReadableMap config) {
+    void dataSetConfig(IDataSet<PieEntry> dataSet, ReadableMap config) {
         PieDataSet pieDataSet = (PieDataSet) dataSet;
 
         ChartDataSetConfigUtils.commonConfig(pieDataSet, config);
@@ -54,9 +58,24 @@ public class PieChartManager extends ChartBaseManager<PieChart, Entry> {
         }
     }
 
-    @ReactProp(name = "drawSliceText")
+    @Override
+    PieEntry createEntry(ReadableArray values, int index) {
+        PieEntry entry;
+
+        ReadableMap map = values.getMap(index);
+
+        entry = new PieEntry((float) map.getDouble("y"));
+
+        if (map.hasKey("payload")) {
+            entry.setData(map.getMap("payload"));
+        }
+        return entry;
+    }
+
+
+    @ReactProp(name = "drawEntryLabels")
     public void setDrawSliceText(PieChart chart, boolean enabled) {
-        chart.setDrawSliceText(enabled);
+        chart.setDrawEntryLabels(enabled);
     }
 
     @ReactProp(name = "usePercentValues")

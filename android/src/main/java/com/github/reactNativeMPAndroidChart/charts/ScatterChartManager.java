@@ -2,6 +2,8 @@ package com.github.reactNativeMPAndroidChart.charts;
 
 
 import android.graphics.Color;
+
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -30,8 +32,8 @@ public class ScatterChartManager extends BarLineChartBaseManager<ScatterChart, E
     }
 
     @Override
-    ChartData createData(String[] xValues) {
-        return new ScatterData(xValues);
+    ChartData createData() {
+        return new ScatterData();
     }
 
     @Override
@@ -60,5 +62,16 @@ public class ScatterChartManager extends BarLineChartBaseManager<ScatterChart, E
         if (BridgeUtils.validate(config, ReadableType.Number, "scatterShapeHoleRadius")) {
             scatterDataSet.setScatterShapeHoleRadius((float) config.getDouble("scatterShapeHoleRadius"));
         }
+    }
+
+    @Override
+    Entry createEntry(ReadableArray values, int index) {
+        ReadableMap map = values.getMap(index);
+
+        Entry entry = new Entry((float) map.getDouble("x"), (float) map.getDouble("y"));
+        if (map.hasKey("payload")) {
+            entry.setData(map.getMap("payload"));
+        }
+        return entry;
     }
 }
