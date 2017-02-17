@@ -71,6 +71,11 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
         float y = (float) entry.getDouble("y");
         float size = (float) entry.getDouble("size");
 
-        return new BubbleEntry(x, y, size);
+        BubbleEntry bubbleEntry = new BubbleEntry(x, y, size);
+        if (entry.hasKey("payload")) {
+            bubbleEntry.setData(entry.getMap("payload"));
+        }
+
+        return bubbleEntry;
     }
 }

@@ -164,11 +164,6 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
         chart.setNoDataText(noDataText);
     }
 
-    @ReactProp(name = "noDataTextDescription")
-    public void setNoDataTextDescription(Chart chart, String noDataTextDescription) {
-        chart.setNoDataText(noDataTextDescription);
-    }
-
     @ReactProp(name = "touchEnabled")
     public void setTouchEnabled(Chart chart, boolean enabled) {
         chart.setTouchEnabled(enabled);
@@ -401,11 +396,6 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             return;
         }
 
-        String[] xValues = new String[0];
-        if (BridgeUtils.validate(propMap, ReadableType.Array, "xValues")) {
-            xValues = BridgeUtils.convertToStringArray(propMap.getArray("xValues"));
-        }
-
         ChartData<IDataSet<U>> chartData = createData();
 
         ReadableArray datasets = propMap.getArray("datasets");
@@ -413,7 +403,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             ReadableMap dataset = datasets.getMap(i);
 
             // TODO validation
-            ReadableArray yValues = dataset.getArray("yValues");
+            ReadableArray yValues = dataset.getArray("values");
             String label = dataset.getString("label");
 
             ArrayList<U> entries = createEntries(yValues);
