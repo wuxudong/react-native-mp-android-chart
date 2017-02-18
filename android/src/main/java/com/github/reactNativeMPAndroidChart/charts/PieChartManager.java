@@ -64,11 +64,9 @@ public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
 
         ReadableMap map = values.getMap(index);
 
-        entry = new PieEntry((float) map.getDouble("y"));
+        entry = new PieEntry((float) map.getDouble("y"), map.getString("label"));
 
-        if (map.hasKey("payload")) {
-            entry.setData(map.getMap("payload"));
-        }
+        entry.setData(map);
         return entry;
     }
 

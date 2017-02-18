@@ -23,6 +23,7 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.markers.OvalMarker;
 import com.github.reactNativeMPAndroidChart.markers.RNMarkerView;
@@ -108,6 +109,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
 
                     LegendEntry[] legendEntries = new LegendEntry[labels.length];
                     for (int i = 0; i < legendEntries.length; i++) {
+                        legendEntries[i] = new LegendEntry();
                         legendEntries[i].formColor = colorsParsed[i];
                         legendEntries[i].label = labels[i];
                     }
@@ -396,6 +398,10 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             return;
         }
 
+        if (propMap.hasKey("xLabels")) {
+            chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BridgeUtils.convertToStringArray(propMap.getArray("xLabels"))));
+        }
+
         ChartData<IDataSet<U>> chartData = createData();
 
         ReadableArray datasets = propMap.getArray("datasets");
@@ -403,10 +409,10 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
             ReadableMap dataset = datasets.getMap(i);
 
             // TODO validation
-            ReadableArray yValues = dataset.getArray("values");
+            ReadableArray values = dataset.getArray("values");
             String label = dataset.getString("label");
 
-            ArrayList<U> entries = createEntries(yValues);
+            ArrayList<U> entries = createEntries(values);
 
             IDataSet<U> lineDataSet = createDataSet(entries, label);
 
@@ -418,6 +424,7 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
         }
 
         chart.setData(chartData);
+
         chart.invalidate();
     }
 

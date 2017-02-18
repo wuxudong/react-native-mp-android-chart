@@ -69,9 +69,7 @@ public class RadarChartManager extends YAxisChartBase<RadarChart, RadarEntry> {
 
         entry = new RadarEntry((float) map.getDouble("y"));
 
-        if (map.hasKey("payload")) {
-            entry.setData(map.getMap("payload"));
-        }
+        entry.setData(map);
         return entry;
 
     }

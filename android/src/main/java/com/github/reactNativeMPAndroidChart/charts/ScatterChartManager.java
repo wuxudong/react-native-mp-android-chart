@@ -68,10 +68,15 @@ public class ScatterChartManager extends BarLineChartBaseManager<ScatterChart, E
     Entry createEntry(ReadableArray values, int index) {
         ReadableMap map = values.getMap(index);
 
-        Entry entry = new Entry((float) map.getDouble("x"), (float) map.getDouble("y"));
-        if (map.hasKey("payload")) {
-            entry.setData(map.getMap("payload"));
+        float x;
+        if (map.hasKey("x")) {
+            x = (float) map.getDouble("x");
+        } else {
+            x = index;
         }
+
+        Entry entry = new Entry(x, (float) map.getDouble("y"));
+        entry.setData(map);
         return entry;
     }
 }

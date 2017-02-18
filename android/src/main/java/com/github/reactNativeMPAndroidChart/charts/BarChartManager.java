@@ -48,17 +48,22 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
 
         ReadableMap map = values.getMap(index);
 
+        float x;
+        if (map.hasKey("x")) {
+            x = (float) map.getDouble("x");
+        } else {
+            x = index;
+        }
+
         if (ReadableType.Array.equals(map.getType("y"))) {
-            entry = new BarEntry((float) map.getDouble("x"), BridgeUtils.convertToFloatArray(map.getArray("y")));
+            entry = new BarEntry(x, BridgeUtils.convertToFloatArray(map.getArray("y")));
         } else if (ReadableType.Number.equals(map.getType("y"))) {
-            entry = new BarEntry((float) map.getDouble("x"), (float) map.getDouble("y"));
+            entry = new BarEntry(x, (float) map.getDouble("y"));
         } else {
             throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
         }
 
-        if (map.hasKey("payload")) {
-            entry.setData(map.getMap("payload"));
-        }
+        entry.setData(map);
         return entry;
     }
 
@@ -78,6 +83,7 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
         if (BridgeUtils.validate(config, ReadableType.Array, "stackLabels")) {
             barDataSet.setStackLabels(BridgeUtils.convertToStringArray(config.getArray("stackLabels")));
         }
+
     }
 
     @ReactProp(name = "drawValueAboveBar")

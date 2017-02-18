@@ -59,22 +59,26 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
             throw new IllegalArgumentException("Invalid BubbleEntry data");
         }
 
-        ReadableMap entry = values.getMap(index);
-        if(BridgeUtils.validate(entry, ReadableType.Number, "x") ||
-                !BridgeUtils.validate(entry, ReadableType.Number, "y") ||
-                !BridgeUtils.validate(entry, ReadableType.Number, "size")) {
+        ReadableMap map = values.getMap(index);
+
+        float x;
+        if (map.hasKey("x")) {
+            x = (float) map.getDouble("x");
+        } else {
+            x = index;
+        }
+
+
+        if (!BridgeUtils.validate(map, ReadableType.Number, "y") ||
+                !BridgeUtils.validate(map, ReadableType.Number, "size")) {
             throw new IllegalArgumentException("Invalid BubbleEntry data");
         }
 
 
-        float x = (float) entry.getDouble("x");
-        float y = (float) entry.getDouble("y");
-        float size = (float) entry.getDouble("size");
+        float y = (float) map.getDouble("y");
+        float size = (float) map.getDouble("size");
 
-        BubbleEntry bubbleEntry = new BubbleEntry(x, y, size);
-        if (entry.hasKey("payload")) {
-            bubbleEntry.setData(entry.getMap("payload"));
-        }
+        BubbleEntry bubbleEntry = new BubbleEntry(x, y, size, map);
 
         return bubbleEntry;
     }

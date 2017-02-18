@@ -83,27 +83,30 @@ public class CandleStickChartManager extends BarLineChartBaseManager<CandleStick
             throw new IllegalArgumentException();
         }
 
-        ReadableMap entryData = values.getMap(index);
+        ReadableMap map = values.getMap(index);
+
+        float x;
+        if (map.hasKey("x")) {
+            x = (float) map.getDouble("x");
+        } else {
+            x = index;
+        }
+
         if (
-                !BridgeUtils.validate(entryData, ReadableType.Number, "x") ||
-                !BridgeUtils.validate(entryData, ReadableType.Number, "shadowH") ||
-                !BridgeUtils.validate(entryData, ReadableType.Number, "shadowL") ||
-                !BridgeUtils.validate(entryData, ReadableType.Number, "open") ||
-                !BridgeUtils.validate(entryData, ReadableType.Number, "close")) {
+                !BridgeUtils.validate(map, ReadableType.Number, "shadowH") ||
+                !BridgeUtils.validate(map, ReadableType.Number, "shadowL") ||
+                !BridgeUtils.validate(map, ReadableType.Number, "open") ||
+                !BridgeUtils.validate(map, ReadableType.Number, "close")) {
             throw new IllegalArgumentException("CandleStick data must contain: shadowH, shadowL, open and close values");
         }
 
-        float x = (float) entryData.getDouble("x");
-        float shadowH = (float) entryData.getDouble("shadowH");
-        float shadowL = (float) entryData.getDouble("shadowL");
-        float open = (float) entryData.getDouble("open");
-        float close = (float) entryData.getDouble("close");
+        float shadowH = (float) map.getDouble("shadowH");
+        float shadowL = (float) map.getDouble("shadowL");
+        float open = (float) map.getDouble("open");
+        float close = (float) map.getDouble("close");
 
-        CandleEntry candleEntry = new CandleEntry(x, shadowH, shadowL, open, close);
+        CandleEntry candleEntry = new CandleEntry(x, shadowH, shadowL, open, close, map);
 
-        if (entryData.hasKey("payload")) {
-            candleEntry.setData(entryData.getMap("payload"));
-        }
         return candleEntry;
     }
 }
