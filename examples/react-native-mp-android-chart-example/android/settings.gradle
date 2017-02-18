@@ -1,0 +1,9 @@
+rootProject.name = 'reactNativeMPAndroidChartExample'
+
+include ':app'
+
+include ':reactNativeMPAndroidChart'
+project(':reactNativeMPAndroidChart').projectDir = new File(
+        rootProject.projectDir,
+        '../node_modules/react-native-mp-android-chart/android'
+)
