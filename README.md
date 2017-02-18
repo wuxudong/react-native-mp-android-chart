@@ -5,7 +5,16 @@ This library is React Native wrapper of popular Android charting library [MPAndr
 ## Table of contents
 - [Setup](#setup)
 - [Usage](#usage)
-- [Example](#example-application)
+
+
+## Example application
+cd examples
+
+cd react-native-mp-android-chart-example
+
+npm install
+
+react-native run-android
 
 ## Setup
 Library can be easily installed using NPM:
@@ -127,9 +136,6 @@ const styles = StyleSheet.create({
   }
 });
 ```
-
-## Example application
-Example Android application with source code and `apk` is available [here](https://github.com/mskec/react-native-mp-android-chart-example).
 
 ## License
 The MIT License
