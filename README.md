@@ -67,14 +67,15 @@ More details on available configuration can be found on their [wiki](https://git
 Example of how charts are used and how to apply configuration can be found in example [Android application](#example-application).
 
 Supported charts with examples:
-- [Bar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/BarChartScreen.js)
-- [Bubble](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/BubbleChartScreen.js)
-- [Candle stick](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/CandleStickChartScreen.js)
-- [Line](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/LineChartScreen.js)
-- [Pie](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/PieChartScreen.js)
-- [Radar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/RadarChartScreen.js)
-- [Scatter](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/ScatterChartScreen.js)
-- [Stacked bar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/StackedBarChartScreen.js)
+- [Bar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/BarChartScreen.js)
+- [Bubble](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/BubbleChartScreen.js)
+- [Candle stick](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/CandleStickChartScreen.js)
+- [Line](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/LineChartScreen.js)
+- [Discrete Line With Custom Marker Text](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/TimeSeriesLineChartScreen.js)
+- [Pie](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/PieChartScreen.js)
+- [Radar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/RadarChartScreen.js)
+- [Scatter](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/ScatterChartScreen.js)
+- [Stacked bar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/StackedBarChartScreen.js)
 
 ### Example code
 This is simple example of how `BarChart` is used.
@@ -89,19 +90,19 @@ class BarChartScreen extends React.Component {
     this.state = {
       data: {
         datasets: [{
-          yValues: [100, 105, 102, 110],
+          values: [{y:100}, {y:105}, {y:102}, {y:110}],
           label: 'Data set 1',
           config: {
             color: 'teal'
           }
         }, {
-          yValues: [110, 100, 105, 108],
+          values: [{y:110}, {y:100}, {y:105}, {y:108}],
           label: 'Data set 2',
           config: {
             color: 'orange'
           }
         }],
-        xValues: ['Q1', 'Q2', 'Q3', 'Q4']
+        xLabels: ['Q1', 'Q2', 'Q3', 'Q4']
       }
     };
   }
