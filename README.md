@@ -1,7 +1,7 @@
 # React Native MPAndroidChart
 This library is React Native wrapper of popular Android charting library [MPAndroidChart](https://github.com/PhilJay/MPAndroidChart).
 
-
+ update version to v3.0.1
 ## Table of contents
 - [Setup](#setup)
 - [Usage](#usage)
