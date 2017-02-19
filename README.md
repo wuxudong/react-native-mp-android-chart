@@ -67,15 +67,16 @@ More details on available configuration can be found on their [wiki](https://git
 Example of how charts are used and how to apply configuration can be found in example [Android application](#example-application).
 
 Supported charts with examples:
-- [Bar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/BarChartScreen.js)
-- [Bubble](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/BubbleChartScreen.js)
-- [Candle stick](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/CandleStickChartScreen.js)
-- [Line](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/LineChartScreen.js)
-- [Discrete Line With Custom Marker Text](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/TimeSeriesLineChartScreen.js)
-- [Pie](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/PieChartScreen.js)
-- [Radar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/RadarChartScreen.js)
-- [Scatter](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/ScatterChartScreen.js)
-- [Stacked bar](https://github.com/wuxudong/react-native-mp-android-chart/blob/master/examples/react-native-mp-android-chart-example/app/StackedBarChartScreen.js)
+- [Bar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/BarChartScreen.js)
+- [Bubble](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/BubbleChartScreen.js)
+- [Candle stick](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/CandleStickChartScreen.js)
+- [Line](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/LineChartScreen.js)
+- [Discrete Line With Custom Marker Text](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/TimeSeriesLineChartScreen.js)
+- [Pie](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/PieChartScreen.js)
+- [Radar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/RadarChartScreen.js)
+- [Scatter](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/ScatterChartScreen.js)
+- [Stacked bar](https://github.com/mskec/react-native-mp-android-chart-example/blob/master/app/StackedBarChartScreen.js)
+
 
 ### Example code
 This is simple example of how `BarChart` is used.
