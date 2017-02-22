@@ -24,6 +24,8 @@ import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.markers.OvalMarker;
 import com.github.reactNativeMPAndroidChart.markers.RNMarkerView;
@@ -222,6 +224,9 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
 
         setCommonAxisConfig(chart, axis, propMap);
 
+        if (BridgeUtils.validate(propMap, ReadableType.Number, "labelRotationAngle")) {
+            axis.setLabelRotationAngle((float) propMap.getDouble("labelRotationAngle"));
+        }
         if (BridgeUtils.validate(propMap, ReadableType.Boolean, "avoidFirstLastClipping")) {
             axis.setAvoidFirstLastClipping(propMap.getBoolean("avoidFirstLastClipping"));
         }
@@ -387,6 +392,41 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
         if (BridgeUtils.validate(propMap, ReadableType.Boolean, "drawLimitLinesBehindData")) {
             axis.setDrawLimitLinesBehindData(propMap.getBoolean("drawLimitLinesBehindData"));
         }
+
+        if (BridgeUtils.validate(propMap, ReadableType.Number, "axisMaxValue")) {
+            axis.setAxisMaximum((float) propMap.getDouble("axisMaxValue"));
+        }
+        if (BridgeUtils.validate(propMap, ReadableType.Number, "axisMinValue")) {
+            axis.setAxisMinimum((float) propMap.getDouble("axisMinValue"));
+        }
+        if (BridgeUtils.validate(propMap, ReadableType.Number, "granularity")) {
+            axis.setGranularity((float) propMap.getDouble("granularity"));
+        }
+        if (BridgeUtils.validate(propMap, ReadableType.Boolean, "granularityEnabled")) {
+            axis.setGranularityEnabled(propMap.getBoolean("granularityEnabled"));
+        }
+        if (BridgeUtils.validate(propMap, ReadableType.Number, "labelCount")) {
+            boolean labelCountForce = false;
+            if (BridgeUtils.validate(propMap, ReadableType.Boolean, "labelCountForce")) {
+                labelCountForce = propMap.getBoolean("labelCountForce");
+            }
+            axis.setLabelCount(propMap.getInt("labelCount"), labelCountForce);
+        }
+
+        // formatting
+        if (BridgeUtils.validate(propMap, ReadableType.String, "valueFormatter")) {
+            String valueFormatter = propMap.getString("valueFormatter");
+
+            if ("largeValue".equals(valueFormatter)) {
+                axis.setValueFormatter(new LargeValueFormatter());
+            } else if ("percent".equals(valueFormatter)) {
+                axis.setValueFormatter(new PercentFormatter());
+            } else {
+                axis.setValueFormatter(new CustomFormatter(valueFormatter));
+            }
+        } else if (BridgeUtils.validate(propMap, ReadableType.Array, "valueFormatter")) {
+            axis.setValueFormatter(new IndexAxisValueFormatter(BridgeUtils.convertToStringArray(propMap.getArray("valueFormatter"))));
+        }
     }
 
     /**
@@ -394,30 +434,26 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
      */
     @ReactProp(name = "data")
     public void setData(Chart chart, ReadableMap propMap) {
-        if (!BridgeUtils.validate(propMap, ReadableType.Array, "datasets")) {
+        if (!BridgeUtils.validate(propMap, ReadableType.Array, "dataSets")) {
             return;
-        }
-
-        if (propMap.hasKey("xLabels")) {
-            chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(BridgeUtils.convertToStringArray(propMap.getArray("xLabels"))));
         }
 
         ChartData<IDataSet<U>> chartData = createData();
 
-        ReadableArray datasets = propMap.getArray("datasets");
-        for (int i = 0; i < datasets.size(); i++) {
-            ReadableMap dataset = datasets.getMap(i);
+        ReadableArray dataSets = propMap.getArray("dataSets");
+        for (int i = 0; i < dataSets.size(); i++) {
+            ReadableMap dataSet = dataSets.getMap(i);
 
             // TODO validation
-            ReadableArray values = dataset.getArray("values");
-            String label = dataset.getString("label");
+            ReadableArray values = dataSet.getArray("values");
+            String label = dataSet.getString("label");
 
             ArrayList<U> entries = createEntries(values);
 
             IDataSet<U> lineDataSet = createDataSet(entries, label);
 
-            if (BridgeUtils.validate(dataset, ReadableType.Map, "config")) {
-                dataSetConfig(lineDataSet, dataset.getMap("config"));
+            if (BridgeUtils.validate(dataSet, ReadableType.Map, "config")) {
+                dataSetConfig(lineDataSet, dataSet.getMap("config"));
             }
 
             chartData.addDataSet(lineDataSet);

@@ -2,6 +2,7 @@ package com.github.reactNativeMPAndroidChart.charts;
 
 import android.graphics.Color;
 import android.view.View;
+
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
@@ -46,24 +47,32 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
     BarEntry createEntry(ReadableArray values, int index) {
         BarEntry entry;
 
-        ReadableMap map = values.getMap(index);
+        float x = index;
+        if (ReadableType.Map.equals(values.getType(index))) {
+            ReadableMap map = values.getMap(index);
 
-        float x;
-        if (map.hasKey("x")) {
-            x = (float) map.getDouble("x");
-        } else {
-            x = index;
-        }
+            if (map.hasKey("x")) {
+                x = (float) map.getDouble("x");
+            }
 
-        if (ReadableType.Array.equals(map.getType("y"))) {
-            entry = new BarEntry(x, BridgeUtils.convertToFloatArray(map.getArray("y")));
-        } else if (ReadableType.Number.equals(map.getType("y"))) {
-            entry = new BarEntry(x, (float) map.getDouble("y"));
+            if (ReadableType.Array.equals(map.getType("y"))) {
+                entry = new BarEntry(x, BridgeUtils.convertToFloatArray(map.getArray("y")));
+            } else if (ReadableType.Number.equals(map.getType("y"))) {
+                entry = new BarEntry(x, (float) map.getDouble("y"));
+            } else {
+                throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
+            }
+
+            entry.setData(map);
+
+        } else if (ReadableType.Array.equals(values.getType(index))) {
+            entry = new BarEntry(x, BridgeUtils.convertToFloatArray(values.getArray(index)));
+        } else if (ReadableType.Number.equals(values.getType(index))) {
+            entry = new BarEntry(x, (float) values.getDouble(index));
         } else {
             throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
         }
 
-        entry.setData(map);
         return entry;
     }
 

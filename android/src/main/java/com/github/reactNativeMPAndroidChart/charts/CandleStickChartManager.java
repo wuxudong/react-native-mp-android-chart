@@ -85,11 +85,9 @@ public class CandleStickChartManager extends BarLineChartBaseManager<CandleStick
 
         ReadableMap map = values.getMap(index);
 
-        float x;
+        float x = index;
         if (map.hasKey("x")) {
             x = (float) map.getDouble("x");
-        } else {
-            x = index;
         }
 
         if (

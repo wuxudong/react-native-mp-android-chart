@@ -98,16 +98,21 @@ public class LineChartManager extends BarLineChartBaseManager<LineChart, Entry> 
 
     @Override
     Entry createEntry(ReadableArray values, int index) {
-        ReadableMap map = values.getMap(index);
+        float x = index;
 
-        float x;
-        if (map.hasKey("x")) {
-            x = (float) map.getDouble("x");
+        Entry entry;
+        if (ReadableType.Map.equals(values.getType(index))) {
+            ReadableMap map = values.getMap(index);
+            if (map.hasKey("x")) {
+                x = (float) map.getDouble("x");
+            }
+            entry = new Entry(x, (float) map.getDouble("y"), map);
+        } else if (ReadableType.Number.equals(values.getType(index))) {
+            entry = new Entry(x, (float) values.getDouble(index));
         } else {
-            x = index;
+            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
         }
 
-        Entry entry = new Entry(x, (float) map.getDouble("y"), map);
         return entry;
     }
 

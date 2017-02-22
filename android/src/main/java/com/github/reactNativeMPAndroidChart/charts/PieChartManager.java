@@ -12,6 +12,7 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.ChartData;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -62,11 +63,21 @@ public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
     PieEntry createEntry(ReadableArray values, int index) {
         PieEntry entry;
 
-        ReadableMap map = values.getMap(index);
+        if (ReadableType.Map.equals(values.getType(index))) {
+            ReadableMap map = values.getMap(index);
 
-        entry = new PieEntry((float) map.getDouble("y"), map.getString("label"));
+            float value = (float) map.getDouble("value");
+            if (BridgeUtils.validate(map, ReadableType.String, "label")) {
+                entry = new PieEntry(value, map.getString("label"), map);
+            } else {
+                entry = new PieEntry(value, map);
+            }
+        } else if (ReadableType.Number.equals(values.getType(index))) {
+            entry = new PieEntry((float) values.getDouble(index));
+        } else {
+            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
+        }
 
-        entry.setData(map);
         return entry;
     }
 

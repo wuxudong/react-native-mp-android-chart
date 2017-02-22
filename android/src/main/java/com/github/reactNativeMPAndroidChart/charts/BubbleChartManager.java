@@ -61,13 +61,10 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
 
         ReadableMap map = values.getMap(index);
 
-        float x;
+        float x = index;
         if (map.hasKey("x")) {
             x = (float) map.getDouble("x");
-        } else {
-            x = index;
         }
-
 
         if (!BridgeUtils.validate(map, ReadableType.Number, "y") ||
                 !BridgeUtils.validate(map, ReadableType.Number, "size")) {
