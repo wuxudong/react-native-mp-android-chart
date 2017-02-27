@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -66,21 +67,6 @@ public class ScatterChartManager extends BarLineChartBaseManager<ScatterChart, E
 
     @Override
     Entry createEntry(ReadableArray values, int index) {
-        float x = index;
-
-        Entry entry;
-        if (ReadableType.Map.equals(values.getType(index))) {
-            ReadableMap map = values.getMap(index);
-            if (map.hasKey("x")) {
-                x = (float) map.getDouble("x");
-            }
-            entry = new Entry(x, (float) map.getDouble("y"), map);
-        } else if (ReadableType.Number.equals(values.getType(index))) {
-            entry = new Entry(x, (float) values.getDouble(index));
-        } else {
-            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
-        }
-
-        return entry;
+        return DataSetUtils.createLineScatterEntry(values, index);
     }
 }

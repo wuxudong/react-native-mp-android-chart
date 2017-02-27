@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -45,35 +46,7 @@ public class BarChartManager extends BarLineChartBaseManager<BarChart, BarEntry>
 
     @Override
     BarEntry createEntry(ReadableArray values, int index) {
-        BarEntry entry;
-
-        float x = index;
-        if (ReadableType.Map.equals(values.getType(index))) {
-            ReadableMap map = values.getMap(index);
-
-            if (map.hasKey("x")) {
-                x = (float) map.getDouble("x");
-            }
-
-            if (ReadableType.Array.equals(map.getType("y"))) {
-                entry = new BarEntry(x, BridgeUtils.convertToFloatArray(map.getArray("y")));
-            } else if (ReadableType.Number.equals(map.getType("y"))) {
-                entry = new BarEntry(x, (float) map.getDouble("y"));
-            } else {
-                throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
-            }
-
-            entry.setData(map);
-
-        } else if (ReadableType.Array.equals(values.getType(index))) {
-            entry = new BarEntry(x, BridgeUtils.convertToFloatArray(values.getArray(index)));
-        } else if (ReadableType.Number.equals(values.getType(index))) {
-            entry = new BarEntry(x, (float) values.getDouble(index));
-        } else {
-            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
-        }
-
-        return entry;
+        return DataSetUtils.createBarEntry(values, index);
     }
 
     @Override

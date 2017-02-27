@@ -19,6 +19,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -61,24 +62,7 @@ public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
 
     @Override
     PieEntry createEntry(ReadableArray values, int index) {
-        PieEntry entry;
-
-        if (ReadableType.Map.equals(values.getType(index))) {
-            ReadableMap map = values.getMap(index);
-
-            float value = (float) map.getDouble("value");
-            if (BridgeUtils.validate(map, ReadableType.String, "label")) {
-                entry = new PieEntry(value, map.getString("label"), map);
-            } else {
-                entry = new PieEntry(value, map);
-            }
-        } else if (ReadableType.Number.equals(values.getType(index))) {
-            entry = new PieEntry((float) values.getDouble(index));
-        } else {
-            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
-        }
-
-        return entry;
+        return DataSetUtils.createPieEntry(values, index);
     }
 
 

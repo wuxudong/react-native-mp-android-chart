@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.RadarEntry;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -65,18 +66,7 @@ public class RadarChartManager extends YAxisChartBase<RadarChart, RadarEntry> {
 
     @Override
     RadarEntry createEntry(ReadableArray values, int index) {
-        RadarEntry entry;
-
-        if (ReadableType.Map.equals(values.getType(index))) {
-            ReadableMap map = values.getMap(index);
-            float value = (float) map.getDouble("value");
-            entry = new RadarEntry(value, map);
-        } else if (ReadableType.Number.equals(values.getType(index))) {
-            entry = new RadarEntry((float) values.getDouble(index));
-        } else {
-            throw new IllegalArgumentException("Unexpected entry type: " + values.getType(index));
-        }
-        return entry;
+        return DataSetUtils.createRadarEntry(values, index);
     }
 
     @ReactProp(name = "skipWebLineCount")

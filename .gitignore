@@ -111,10 +111,3 @@ com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
 fabric.properties
-
-
-.idea
-build
-.gradle
-*.iml
-local.properties

@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -79,32 +80,6 @@ public class CandleStickChartManager extends BarLineChartBaseManager<CandleStick
 
     @Override
     CandleEntry createEntry(ReadableArray values, int index) {
-        if (!ReadableType.Map.equals(values.getType(index))) {
-            throw new IllegalArgumentException();
-        }
-
-        ReadableMap map = values.getMap(index);
-
-        float x = index;
-        if (map.hasKey("x")) {
-            x = (float) map.getDouble("x");
-        }
-
-        if (
-                !BridgeUtils.validate(map, ReadableType.Number, "shadowH") ||
-                !BridgeUtils.validate(map, ReadableType.Number, "shadowL") ||
-                !BridgeUtils.validate(map, ReadableType.Number, "open") ||
-                !BridgeUtils.validate(map, ReadableType.Number, "close")) {
-            throw new IllegalArgumentException("CandleStick data must contain: shadowH, shadowL, open and close values");
-        }
-
-        float shadowH = (float) map.getDouble("shadowH");
-        float shadowL = (float) map.getDouble("shadowL");
-        float open = (float) map.getDouble("open");
-        float close = (float) map.getDouble("close");
-
-        CandleEntry candleEntry = new CandleEntry(x, shadowH, shadowL, open, close, map);
-
-        return candleEntry;
+        return DataSetUtils.createCandleEntry(values, index);
     }
 }

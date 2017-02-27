@@ -10,10 +10,10 @@ import com.github.mikephil.charting.data.BubbleData;
 import com.github.mikephil.charting.data.BubbleDataSet;
 import com.github.mikephil.charting.data.BubbleEntry;
 import com.github.mikephil.charting.data.ChartData;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.interfaces.datasets.IDataSet;
 import com.github.reactNativeMPAndroidChart.utils.BridgeUtils;
 import com.github.reactNativeMPAndroidChart.utils.ChartDataSetConfigUtils;
+import com.github.reactNativeMPAndroidChart.utils.DataSetUtils;
 
 import java.util.ArrayList;
 
@@ -55,28 +55,6 @@ public class BubbleChartManager extends ChartBaseManager<BubbleChart, BubbleEntr
 
     @Override
     BubbleEntry createEntry(ReadableArray values, int index) {
-        if (!ReadableType.Map.equals(values.getType(index))) {
-            throw new IllegalArgumentException("Invalid BubbleEntry data");
-        }
-
-        ReadableMap map = values.getMap(index);
-
-        float x = index;
-        if (map.hasKey("x")) {
-            x = (float) map.getDouble("x");
-        }
-
-        if (!BridgeUtils.validate(map, ReadableType.Number, "y") ||
-                !BridgeUtils.validate(map, ReadableType.Number, "size")) {
-            throw new IllegalArgumentException("Invalid BubbleEntry data");
-        }
-
-
-        float y = (float) map.getDouble("y");
-        float size = (float) map.getDouble("size");
-
-        BubbleEntry bubbleEntry = new BubbleEntry(x, y, size, map);
-
-        return bubbleEntry;
+        return DataSetUtils.createBubbleEntry(values, index);
     }
 }

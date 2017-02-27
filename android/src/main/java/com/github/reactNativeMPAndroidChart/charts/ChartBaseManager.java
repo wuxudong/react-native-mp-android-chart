@@ -104,13 +104,13 @@ public abstract class ChartBaseManager<T extends Chart, U extends Entry> extends
                     String[] labels = BridgeUtils.convertToStringArray(labelsArray);
                     String[] colors = BridgeUtils.convertToStringArray(colorsArray);
 
-                    int[] colorsParsed = new int[colors.length];
-                    for (int i = 0; i < colors.length; i++) {
-                        colorsParsed[i] = Color.parseColor(colors[i]);
-                    }
+                    int length = colors.length;
 
+                    int[] colorsParsed = new int[length];
                     LegendEntry[] legendEntries = new LegendEntry[labels.length];
-                    for (int i = 0; i < legendEntries.length; i++) {
+                    for (int i = 0; i < length; i++) {
+                        colorsParsed[i] = Color.parseColor(colors[i]);
+
                         legendEntries[i] = new LegendEntry();
                         legendEntries[i].formColor = colorsParsed[i];
                         legendEntries[i].label = labels[i];
