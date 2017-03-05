@@ -111,6 +111,17 @@ public class PieChartManager extends ChartBaseManager<PieChart, PieEntry> {
         chart.setTransparentCircleAlpha(alpha);
     }
 
+    @ReactProp(name = "entryLabelColor")
+    public void setEntryLabelColor(PieChart chart, String color) {
+        chart.setEntryLabelColor(Color.parseColor(color));
+    }
+
+    @ReactProp(name = "entryLabelTextSize")
+    public void setEntryLabelTextSize(PieChart chart, float size) {
+        chart.setEntryLabelTextSize(size);
+    }
+
+
     @ReactProp(name = "maxAngle")
     public void setMaxAngle(PieChart chart, float maxAngle) {
         chart.setMaxAngle(maxAngle);
